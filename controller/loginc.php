@@ -1,17 +1,27 @@
 <?php
 namespace controller;
 require_once("view/loginv.php");
+require_once("model/loginm.php");
+
 class Login {
+	private $view;
+
+	public function __construct() {
+		$this->view = new \view\login();
+	}
 
 	public function DoLogin () {
 
-		$view = new \view\login();
+		//visa formuläret
+		$this->view = $this->view->displayForm();
 
-		echo $view->htmlStart();
+		if(isset($_POST['submit'])) {
+			//spara data i vyn
+			
+		}
 
 
-		echo $view->displayDate();
-		echo $view->htmlStop();
+		return $this->view;
 
 	}
 
