@@ -5,22 +5,71 @@ namespace view;
 class Login {
 
 	private $html = "";
+	private $username = "";
+	private $password = "";
+	private $helpText = "";
+
+	public function userWantsToLogin() {
+		if (isset($_POST['submit'])) {
+			return true;
+		}
+		else {
+			return false;
+		}		
+	}
+
+	public function loginUser() {
+		//$username = $this->checkInput($this->username);
+		//$password = $this->checkInput($this->password);
+
+		$username = $_POST['username'];
+		$password = $_POST['password'];
+
+		try  {
+			if (isset($_POST['username']) && ($_POST['password'])) {
+				return new \model\login($username, $password);
+			}
+		}
+		catch (Exception $e) {
+
+			$this->helpText = "Felaktigt användarnamn och/eller lösenord";
+			throw $e;
+
+			if(empty($_POST['username']) ) {
+			$this->helpText = "Användarnamn saknas";
+			throw $e;
+			}
+
+			else if(empty($_POST['password']) ) {
+			$this->helpText = "Lösenord saknas";
+			throw $e;
+			}
+
+			else {
+			$this->helpText = "Felaktigt användarnamn och/eller lösenord";
+			throw $e;
+			}
+		}
+		
+
+	}
 
 	public function displayForm () {
-		$value = isset($_POST['UserName']) ? $_POST['UserName'] : '';
+		$value = isset($_POST['UserName']) ? $_POST['username'] : '';
+
 
 		$html = "<form method='post' action='index.php' class='form-inline'>
 			<fieldset>
 				<legend>Login - Skriv in användarnamn och lösenord</legend>
 
-				
+				<p>$this->helpText</p>
 
-				<label for='UserName'>Användarnamn</label>
-				<input id='UserName' name='UserName' type='text' size='15' 
+				<label for='username'>Användarnamn</label>
+				<input id='username' name='username' type='text' size='15' 
 				value='$value'>		
 
 				<label for='Password'>Lösenord</label>
-				<input id='Password' name='Password' type='password' size='15'>
+				<input id='Password' name='password' type='password' size='15'>
 
 				<label for='KeepLogin' class='checkbox'> 
 				<input id='KeepLogin' name='KeepLogin' type='checkbox'> Håll mig inloggad</label>
@@ -32,29 +81,24 @@ class Login {
 		return $html;
 	}
 
-	public function saveFormInput () {
-		$inputName = $_POST["UserName"];
-		$inputPsw = $_POST["Password"];
+	//OBS! blandade returvärden!!!! Lyft ut felmedelande t egna metoder!
+	private function checkInput ($input) {
 
-		return; //vad?
-	}
+		/*if (isset($_POST[$input])) {
+			return true;
+		}*/	
 
-	private function checkInput () {
-		if (isset($_POST["submit"])){		
-			if(empty($inputName) ) {
-				return $helpText= "Användarnamn saknas";
-			}
-
-			else if(empty($inputPsw) ) {
-				return $helpText= "Lösenord saknas";
-			}
-
-			else {
-				return $helpText= "Felaktigt användarnamn och/eller lösenord";
-			}
-
-			//returnera nåt??
+		if(empty($_POST['username']) ) {
+			return $this->helpText = "Användarnamn saknas";
 		}
+
+		else if(empty($_POST['password']) ) {
+			return $this->helpText = "Lösenord saknas";
+		}
+
+		/*else {
+			return $this->helpText = "Felaktigt användarnamn och/eller lösenord";
+		}*/
 	}
 
 }

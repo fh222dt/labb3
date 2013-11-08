@@ -7,7 +7,7 @@ class Html {
 		$html ="<html>
 					<head>
 					<meta charset='utf-8'>
-					<title>Laboration 2</title>
+					<title>Laboration 3</title>
 					<link rel='stylesheet' href='bootstrap/css/bootstrap.css'>
 					<link rel='stylesheet' href='bootstrap/css/bootstrap-responsive.css'>
 					</head>

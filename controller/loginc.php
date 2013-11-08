@@ -7,21 +7,27 @@ class Login {
 	private $view;
 
 	public function __construct() {
-		$this->view = new \view\login();
+		$this->view = new \view\Login();
 	}
 
-	public function DoLogin () {
+	public function LoginUser () {
 
-		//visa formuläret
-		$this->view = $this->view->displayForm();
+		$this->testUserInput();
 
-		if(isset($_POST['submit'])) {
-			//spara data i vyn
-			
+		return $this->view->displayForm();
+
+	}
+
+	private function testUserInput () {
+		if ($this->view->userWantsToLogin()) {
+			try {
+				$user = $this->view->loginUser();
+			}
+			catch (Exeption $e) {
+
+			}
+
 		}
-
-
-		return $this->view;
 
 	}
 
