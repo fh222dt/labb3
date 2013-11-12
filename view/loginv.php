@@ -25,37 +25,35 @@ class Login {
 		$username = $_POST['username'];
 		$password = $_POST['password'];
 
-		try  {
-			if (isset($_POST['username']) && ($_POST['password'])) {
-				return new \model\login($username, $password);
-			}
+		if (!empty($_POST['username']) && !empty($_POST['password'])) {
+				return new \model\login($username, $password);			
 		}
-		catch (Exception $e) {
 
-			$this->helpText = "Felaktigt användarnamn och/eller lösenord";
-			throw $e;
-
+		else {
 			if(empty($_POST['username']) ) {
 			$this->helpText = "Användarnamn saknas";
-			throw $e;
+			
 			}
 
 			else if(empty($_POST['password']) ) {
 			$this->helpText = "Lösenord saknas";
-			throw $e;
+			
 			}
 
-			else {
+			/*else {
 			$this->helpText = "Felaktigt användarnamn och/eller lösenord";
-			throw $e;
-			}
-		}
-		
+			
+			}*/
 
+		}
+	}
+
+	public function notLogedIn() {
+		$this->helpText = "Felaktigt användarnamn och/eller lösenord";
 	}
 
 	public function displayForm () {
-		$value = isset($_POST['UserName']) ? $_POST['username'] : '';
+		$value = isset($_POST['username']) ? $_POST['username'] : '';
 
 
 		$html = "<form method='post' action='index.php' class='form-inline'>

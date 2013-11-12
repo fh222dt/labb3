@@ -11,19 +11,16 @@ class Login {
 	public function __construct ($username, $password) {
 		
 		if($username == $this->username && $password == $this->password) {
-			$this->username = $username;
-			$this->password = $password;
-			//return true;
+			return true;
 		}
 
-		/*else {
+		else {
 			return false;
-
-		}*/
-	
-		if ($username != $this->username) {
-			throw new \Exception("Felaktigt användarnamn");
 		}
+	
+		/*if ($username != $this->username) {
+			throw new \Exception("Felaktigt användarnamn");
+		}*/
 		
 
 		
