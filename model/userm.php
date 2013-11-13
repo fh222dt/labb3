@@ -9,9 +9,9 @@ class User {
 	public function __construct ($username, $password) {
 
 		if ($username == "")
-            throw new \Exception("Cannot create user without name");
+            throw new \Exception("Måste ange användarnamn");
         if ($password == "")
-            throw new \Exception("Cannot create user without psw");
+            throw new \Exception("Måste ange lösenord");
 
 		$this->username = $username;
 		$this->password = $password;

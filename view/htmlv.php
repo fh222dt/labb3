@@ -1,9 +1,14 @@
 <?php
 namespace view;
+require_once("view/loginv.php");
+
+
 
 class Html {
+
 	public function getPage($content) {
 		$date = $this->displayDate();
+		$name = $this->nameOfUser("Ej Inloggad");		//hämta från nåt ställe!
 		$html ="<html>
 					<head>
 					<meta charset='utf-8'>
@@ -15,7 +20,7 @@ class Html {
 					<body>
 				 
 					<h1>Laborationskod fh222dt</h1>"
-					
+					.$name
 					.$content.
 					$date.
 					"</body>
@@ -31,4 +36,12 @@ class Html {
 		$date.= strftime(", den " . "%#d %B %Y" . ". Klockan är [" . "%X" . "]</p>"); //formatet %#d är linux %e	anv %T ist f %X på servern
 		return $date;
 	}
+
+	public function nameOfUser($name) {
+
+		$html = "<h2>$name</h2>";
+		
+		return $html;
+	}
+
 }

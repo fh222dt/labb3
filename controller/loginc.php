@@ -17,7 +17,14 @@ class Login {
 
 		$this->testUserInput();
 
-		return $this->view->displayForm();
+		if ($this->view->userIsLogedIn() == false) {
+		
+			return $this->view->displayForm();
+		}
+
+		else {
+			return $this->view->displayLogedIn();
+		}
 
 	}
 
@@ -38,7 +45,7 @@ class Login {
 					//if($user == false) {
 					else {
 						//visa resultat via vyn									
-						$this->view->isLogedIn();
+						$this->view->doLogIn();
 					}
 				}
 				catch (\Exception $e) {

@@ -1,7 +1,7 @@
 <?php
 
 namespace view;
-require_once("model/loginm.php");
+require_once("model/loginm.php");		//behövs inte kankse????????
 require_once("model/userm.php");
 
 class Login {
@@ -13,6 +13,15 @@ class Login {
 
 	public function userWantsToLogin() {
 		if (isset($_POST['submit'])) {
+			return true;
+		}
+		else {
+			return false;
+		}		
+	}
+
+	public function userIsLogedIn(){
+		if (isset($_GET['login'])) {
 			return true;
 		}
 		else {
@@ -60,8 +69,10 @@ class Login {
 		$this->helpText = "Felaktigt användarnamn och/eller lösenord";
 	}
 
-	public function isLogedIn () {
-		echo "Du är inloggad!";
+	public function doLogIn () {
+		$_SESSION["login"] = 1;			
+			
+		header("Location: ?login");
 	}
 
 	public function displayForm () {
@@ -91,7 +102,11 @@ class Login {
 		return $html;
 	}
 
-	//OBS! blandade returvärden!!!! Lyft ut felmedelande t egna metoder!
+	public function displayLogedIn() {
+		//så som sidan ska se ut när man är inloggad på olika sätt
+	}
+
+	//används inte
 	private function checkInput ($input) {
 
 		/*if (isset($_POST[$input])) {
@@ -111,4 +126,5 @@ class Login {
 		}*/
 	}
 
+	
 }
