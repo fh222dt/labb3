@@ -1,6 +1,8 @@
 <?php
 
 namespace view;
+require_once("model/loginm.php");
+require_once("model/userm.php");
 
 class Login {
 
@@ -18,18 +20,30 @@ class Login {
 		}		
 	}
 
-	public function loginUser() {
-		//$username = $this->checkInput($this->username);
-		//$password = $this->checkInput($this->password);
-
+	public function getUser() {
+		
 		$username = $_POST['username'];
 		$password = $_POST['password'];
 
-		if (!empty($_POST['username']) && !empty($_POST['password'])) {
-				return new \model\login($username, $password);			
-		}
+		//if (!empty($_POST['username']) && !empty($_POST['password'])) {
+				try {					
+					return new \model\User($username, $password);
+				}
+				catch (\Exception $e) {
+					if(empty($_POST['username']) ) {
+					$this->helpText = "Användarnamn saknas";
+					throw $e;
+			
+					}
 
-		else {
+					else if(empty($_POST['password']) ) {
+					$this->helpText = "Lösenord saknas";
+					throw $e;
+					}
+				}			
+		//}
+
+		/*else {
 			if(empty($_POST['username']) ) {
 			$this->helpText = "Användarnamn saknas";
 			
@@ -39,17 +53,15 @@ class Login {
 			$this->helpText = "Lösenord saknas";
 			
 			}
-
-			/*else {
-			$this->helpText = "Felaktigt användarnamn och/eller lösenord";
-			
-			}*/
-
-		}
+		}*/
 	}
 
 	public function notLogedIn() {
 		$this->helpText = "Felaktigt användarnamn och/eller lösenord";
+	}
+
+	public function isLogedIn () {
+		echo "Du är inloggad!";
 	}
 
 	public function displayForm () {

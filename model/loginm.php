@@ -5,11 +5,44 @@ class Login {
 
 	//sträng med krypterat lösenord
 	private $hashedPsw = "";
-	public $username = "Admin";
-	public $password = "Password";
+	private $username = "";
+	private $password = "";
+	private $correctUsername = "Admin";
+	private $correctPassword = "Password";
 
-	public function __construct ($username, $password) {
+	/*public function __construct ($username, $password) {
 		
+		//$this->loginUser($username, $password);
+	
+		if ($username != $this->username) {
+			throw new \Exception("Fel uppgifter!!!");
+		}
+
+		$this->username = $username;
+		$this->password = $password;
+		
+	}*/
+
+	public function loginUser(User $user) {
+		if($user->username == $this->correctUsername && $user->password == $this->correctPassword) {
+			//$this->username = $username;
+			//$this->password = $password;
+
+			return true;
+			//echo "inloggad";
+		}
+
+		else {
+			return false;
+			//echo "fel här";
+		}
+	}
+		
+
+		
+	
+
+	public function createUser ($username, $password) {
 		if($username == $this->username && $password == $this->password) {
 			return true;
 		}
@@ -17,15 +50,6 @@ class Login {
 		else {
 			return false;
 		}
-	
-		/*if ($username != $this->username) {
-			throw new \Exception("Felaktigt användarnamn");
-		}*/
-		
-
-		
-
-		
 	}
 
 	//testa input från användaren, logga in om korrekt
