@@ -8,7 +8,7 @@ class Html {
 
 	public function getPage($content) {
 		$date = $this->displayDate();
-		$name = $this->nameOfUser("Ej Inloggad");		//hämta från nåt ställe!
+		$name = $this->nameOfUser();		//hämta från nåt ställe!
 		$html ="<html>
 					<head>
 					<meta charset='utf-8'>
@@ -37,9 +37,18 @@ class Html {
 		return $date;
 	}
 
-	public function nameOfUser($name) {
+	public function nameOfUser() {
 
-		$html = "<h2>$name</h2>";
+		if(isset($_SESSION["login"])) {
+			//$name = $_POST['username'];					//här är et tokigt!!!!!!!!!!!!!!!!!!!!!!!!
+
+			$html = "<h2>Admin är inloggad</h2>";
+		}
+		else {
+			$html = "<h2>Ej inloggad</h2>";
+		}
+
+		
 		
 		return $html;
 	}

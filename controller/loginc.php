@@ -57,6 +57,10 @@ class Login {
 
 		}
 
+		if($this->view->userIsLogedIn()) {
+			
+		}
+
 		//-----------------login med cookies---------------------
 
 		//kolla i vyn vill anv logga in?

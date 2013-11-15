@@ -21,7 +21,7 @@ class Login {
 	}
 
 	public function userIsLogedIn(){
-		if (isset($_GET['login'])) {
+		if (isset($_SESSION["login"])) {
 			return true;
 		}
 		else {
@@ -31,12 +31,12 @@ class Login {
 
 	public function getUser() {
 		
-		$username = $_POST['username'];
-		$password = $_POST['password'];
+		$this->username = $_POST['username'];
+		$this->password = $_POST['password'];
 
 		//if (!empty($_POST['username']) && !empty($_POST['password'])) {
 				try {					
-					return new \model\User($username, $password);
+					return new \model\User($this->username, $this->password);
 				}
 				catch (\Exception $e) {
 					if(empty($_POST['username']) ) {
@@ -103,7 +103,38 @@ class Login {
 	}
 
 	public function displayLogedIn() {
-		//så som sidan ska se ut när man är inloggad på olika sätt
+		if (isset($_SESSION["login"])) {
+			//if ($this->testSession()==true) {						
+				//$html = "<h2> $this->username är inloggad</h2>";
+				$html = "";				
+				
+				$_SESSION["login"] = $_SESSION["login"]+1;
+
+				if ($_SESSION["login"] < 4) {					
+					if (isset($_COOKIE["username"])) {
+						
+						$html= "<p>Inloggningen lyckades och vi kommer ihåg dig nästa gång</br></p>";
+					}
+
+					else {
+						
+						$html.="<p>Inloggningen lyckades </br></p>";						
+					}
+				}			
+				
+				$html.="<a href='?logout'>Logga ut</a>";
+			
+			//}
+
+			/*else {
+				unset($_SESSION["login"]);
+				session_destroy();
+				header("Location: $_SERVER[PHP_SELF]");
+			}	*/	
+
+				return $html;
+
+		}
 	}
 
 	//används inte
