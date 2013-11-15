@@ -22,7 +22,7 @@ class Login {
 			return $this->view->displayForm();
 		}
 
-		else {
+		else {					
 			return $this->view->displayLogedIn();
 		}
 
@@ -57,9 +57,9 @@ class Login {
 
 		}
 
-		if($this->view->userIsLogedIn()) {
-			
-		}
+		/*if($this->view->userIsLogedIn()) {
+
+		}*/
 
 		//-----------------login med cookies---------------------
 
@@ -81,6 +81,10 @@ class Login {
 		//avsluta i modellen
 
 		//visa resultat via vyn
+
+		if ($this->view->userWantsToLogOut()) {
+			$this->view->logout();
+		}
 
 	}
 

@@ -20,8 +20,17 @@ class Login {
 		}		
 	}
 
-	public function userIsLogedIn(){
+	public function userIsLogedIn(){			//kan behövas med get login sen för cookielogin
 		if (isset($_SESSION["login"])) {
+			return true;
+		}
+		else {
+			return false;
+		}		
+	}
+
+	public function userWantsToLogOut () {
+		if (isset($_GET['logout'])) {
 			return true;
 		}
 		else {
@@ -155,6 +164,25 @@ class Login {
 		/*else {
 			return $this->helpText = "Felaktigt användarnamn och/eller lösenord";
 		}*/
+	}
+
+	//logga ut & förstör cookies och sessionen
+	public function logout () {	
+		
+		if(!isset($_SESSION["login"])) {
+				return "";
+		}
+
+		else {				
+
+			setcookie("username", "ended", strtotime( '-1 min' ));
+			setcookie("password", "ended", strtotime( '-1 min' ));
+
+			unset($_SESSION["login"]);
+			session_destroy();
+
+			return $this->helpText = "Du har nu loggat ut";
+		}
 	}
 
 	
