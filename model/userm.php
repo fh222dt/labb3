@@ -8,10 +8,12 @@ class User {
 
 	public function __construct ($username, $password) {
 
-		if ($username == "")
+		if ($username == "") {
             throw new \Exception("Måste ange användarnamn");
-        if ($password == "")
+        }
+        if ($password == "") {
             throw new \Exception("Måste ange lösenord");
+        }
 
 		$this->username = $username;
 		$this->password = $password;

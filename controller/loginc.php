@@ -22,7 +22,8 @@ class Login {
 			return $this->view->displayForm();
 		}
 
-		else {					
+		else {	
+			//testa ev kaka				
 			return $this->view->displayLogedIn();
 		}
 
@@ -32,38 +33,39 @@ class Login {
 		//-----------------login utan cookies-----------------------
 		//kolla i vyn vill anv logga in?
 		if ($this->view->userWantsToLogin()) {			
-				try {
-					//ta in data från vyn
-					$user = $this->view->getUser();
+			try {
+				//ta in data från vyn
+				$user = $this->view->getUser();
 
-					//testa i modellen												//om koden fr r 31 och framåt körs funkar inte felhanteringen i view!
-					if ($this->model->loginUser($user) == false) {
-						//visa resultat via vyn
-						$this->view->notLogedIn();						
+				//testa i modellen
+				if ($this->model->loginUser($user) == false) {
+					//visa resultat via vyn för ej inloggad
+					$this->view->notLogedIn();						
+				}				
+				
+				//if($user == false) {
+				else {
+					//visa resultat via vyn	
+					if ($this->view->cookie == true) {
+						$this->model->storeUser($user);
 					}
-					
-					//if($user == false) {
-					else {
-						//visa resultat via vyn									
+
+					//else {
 						$this->view->doLogIn();
-					}
+					//}
 				}
-				catch (\Exception $e) {
+			}
+			catch (\Exception $e) {
 
-				}
-			
-
-			var_dump($_POST);
-
+			}
 		}
-
-		/*if($this->view->userIsLogedIn()) {
-
-		}*/
 
 		//-----------------login med cookies---------------------
 
 		//kolla i vyn vill anv logga in?
+		//if ($this->view->userWantsToLoginWCookie()) {
+				//inget bra, det får bli en ifsats i vyn nån stans som kollar cookie eller ej
+		//}
 
 		//ta in data från vyn
 
@@ -74,16 +76,9 @@ class Login {
 
 		//--------------------logga ut--------------------------
 
-		//kolla i vyb vill anv logga ut?
-
-		//ta in data från vyn
-
-		//avsluta i modellen
-
-		//visa resultat via vyn
-
 		if ($this->view->userWantsToLogOut()) {
-			$this->view->logout();
+			$this->model->logout();
+			$this->view->doLogOut();
 		}
 
 	}

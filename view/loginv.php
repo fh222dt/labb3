@@ -1,7 +1,7 @@
 <?php
 
 namespace view;
-require_once("model/loginm.php");		//behövs inte kankse????????
+//require_once("model/loginm.php");		//behövs inte kankse????????
 require_once("model/userm.php");
 
 class Login {
@@ -10,9 +10,14 @@ class Login {
 	private $username = "";
 	private $password = "";
 	private $helpText = "";
+	public $cookie = false;
+	private $session = $_SESSION["login"];
 
 	public function userWantsToLogin() {
 		if (isset($_POST['submit'])) {
+			if(isset($_POST['keeplogin'])) {
+				$this->cookie = true;
+			}
 			return true;
 		}
 		else {
@@ -20,10 +25,24 @@ class Login {
 		}		
 	}
 
-	public function userIsLogedIn(){			//kan behövas med get login sen för cookielogin
-		if (isset($_SESSION["login"])) {
+	/*public function userWantsToLoginWCookie() {
+		if (isset($_POST['submit']) && isset($_POST['keeplogin']) ) {
 			return true;
 		}
+		else {
+			return false;
+		}		
+	}*/
+
+	public function userIsLogedIn(){			//kan behövas med get login sen för cookielogin
+		if (isset($this->session)) {
+			return true;
+		}
+
+		if (isset($_COOKIE["username"])) {
+			return true;
+		}
+
 		else {
 			return false;
 		}		
@@ -43,35 +62,20 @@ class Login {
 		$this->username = $_POST['username'];
 		$this->password = $_POST['password'];
 
-		//if (!empty($_POST['username']) && !empty($_POST['password'])) {
-				try {					
-					return new \model\User($this->username, $this->password);
-				}
-				catch (\Exception $e) {
-					if(empty($_POST['username']) ) {
-					$this->helpText = "Användarnamn saknas";
-					throw $e;
-			
-					}
-
-					else if(empty($_POST['password']) ) {
-					$this->helpText = "Lösenord saknas";
-					throw $e;
-					}
-				}			
-		//}
-
-		/*else {
+		try {					
+			return new \model\User($this->username, $this->password);
+		}
+		catch (\Exception $e) {
 			if(empty($_POST['username']) ) {
 			$this->helpText = "Användarnamn saknas";
-			
+			throw $e;	
 			}
 
 			else if(empty($_POST['password']) ) {
 			$this->helpText = "Lösenord saknas";
-			
+			throw $e;
 			}
-		}*/
+		}			
 	}
 
 	public function notLogedIn() {
@@ -79,12 +83,17 @@ class Login {
 	}
 
 	public function doLogIn () {
-		$_SESSION["login"] = 1;			
+		$this->session = 1;	
+
+		if ($this->cookie == true)	{
+			//gör något m cookies
+		}	
 			
 		header("Location: ?login");
+
 	}
 
-	public function displayForm () {
+	public function displayForm () { 		//fixa till post mm i början
 		$value = isset($_POST['username']) ? $_POST['username'] : '';
 
 
@@ -102,7 +111,7 @@ class Login {
 				<input id='Password' name='password' type='password' size='15'>
 
 				<label for='KeepLogin' class='checkbox'> 
-				<input id='KeepLogin' name='KeepLogin' type='checkbox'> Håll mig inloggad</label>
+				<input id='KeepLogin' name='keeplogin' type='checkbox'> Håll mig inloggad</label>
 
 				<input type='submit' name='submit' value='Logga in' class='btn'>
 			</fieldset>
@@ -112,14 +121,14 @@ class Login {
 	}
 
 	public function displayLogedIn() {
-		if (isset($_SESSION["login"])) {
+		if (isset($this->session)) {
 			//if ($this->testSession()==true) {						
 				//$html = "<h2> $this->username är inloggad</h2>";
 				$html = "";				
 				
-				$_SESSION["login"] = $_SESSION["login"]+1;
+				$this->session = $this->session+1;
 
-				if ($_SESSION["login"] < 4) {					
+				if $this->session < 4) {					
 					if (isset($_COOKIE["username"])) {
 						
 						$html= "<p>Inloggningen lyckades och vi kommer ihåg dig nästa gång</br></p>";
@@ -146,12 +155,12 @@ class Login {
 		}
 	}
 
-	//används inte
-	private function checkInput ($input) {
+	//används inte!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	/*private function checkInput ($input) {
 
 		/*if (isset($_POST[$input])) {
 			return true;
-		}*/	
+		}	
 
 		if(empty($_POST['username']) ) {
 			return $this->helpText = "Användarnamn saknas";
@@ -163,24 +172,19 @@ class Login {
 
 		/*else {
 			return $this->helpText = "Felaktigt användarnamn och/eller lösenord";
-		}*/
-	}
+		}
+	}*/
 
 	//logga ut & förstör cookies och sessionen
-	public function logout () {	
+	public function doLogOut () {	
 		
-		if(!isset($_SESSION["login"])) {
+		if(!isset($this->session)) {
 				return "";
 		}
 
-		else {				
-
-			setcookie("username", "ended", strtotime( '-1 min' ));
-			setcookie("password", "ended", strtotime( '-1 min' ));
-
-			unset($_SESSION["login"]);
-			session_destroy();
-
+		else {		
+			unset($this->session);
+			
 			return $this->helpText = "Du har nu loggat ut";
 		}
 	}
