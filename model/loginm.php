@@ -5,11 +5,10 @@ class Login {
 
 	//sträng med krypterat lösenord
 	private $hashedPsw = "";
-	//private $username = "";
-	//private $password = "";
 	private $correctUsername = "Admin";
 	private $correctPassword = "Password";
 
+	//Returnerar true om rätt användarnamn & lösen angetts 
 	public function loginUser(User $user) {
 		if($user->username == $this->correctUsername && $user->password == $this->correctPassword) {
 			return true;			
@@ -19,21 +18,10 @@ class Login {
 			return false;
 		}
 	}	
-
-	//förstör cookies och sessionen
-	public function logout() {			
-
-			setcookie("username", "ended", strtotime( '-1 min' ));
-			setcookie("password", "ended", strtotime( '-1 min' ));
-
-			session_destroy();
-	}
 	
 	//skapa cookies
 	public function storeUser (User $user) {
 
-		//$this->login($inputName, $inputPsw);
-					
 		$this->hashedPsw = crypt($user->password); 
 		$endtime = strtotime( '+5 min' );
 
@@ -44,6 +32,8 @@ class Login {
 		setcookie("password", $this->hashedPsw, $endtime);			
 	}
 
+	//testa befintligt users lösenord och gammal kaka. 
+	//Returnerar true om det är rätt lösen & inte för gammal kaka.
 	public function testUser($inputPsw) {
 		$correctPsw = file_get_contents("password.txt");
 
@@ -66,6 +56,7 @@ class Login {
 
 	}
 
+	//testa cookies som redan finns. Returnerar true om cokkien inte är för gammal
 	public function testCookie() {
 	
 		$cookieEndTime = file_get_contents("endtime.txt");
@@ -77,8 +68,14 @@ class Login {
 		else {
 			return true;
 		}		
-	}
+	}	
 
-	
-	
+	//förstör cookies och sessionen
+	public function logout() {			
+
+			setcookie("username", "ended", strtotime( '-1 min' ));
+			setcookie("password", "ended", strtotime( '-1 min' ));
+
+			session_destroy();
+	}	
 }

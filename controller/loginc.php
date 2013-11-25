@@ -17,7 +17,7 @@ class Login {
 
 		$this->testUserInput();
 
-		print_r($this->view->userIsLogedIn());				//////////////////////////////////
+		print_r($_SESSION['login']);
 
 		if ($this->view->userIsLogedIn() == false) {
 		
@@ -25,19 +25,15 @@ class Login {
 		}
 
 		else {	
-			//testa ev kaka
-			//if ($this->view->cookie == true) {
-				//if ($this->model->testCookie() == true && $this->model->testSession() == true) {
-					return $this->view->displayLogedIn();
-				//}
-
-				//else {}	
-			//}			
 			
+			return $this->view->displayLogedIn();			
 		}
 		
 
+
 	}
+
+
 
 	private function testUserInput () {
 		//-----------------login utan cookies-----------------------

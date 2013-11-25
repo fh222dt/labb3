@@ -1,7 +1,6 @@
 <?php
 
 namespace view;
-//require_once("model/loginm.php");		//behövs inte kankse????????
 require_once("model/userm.php");
 
 class Login {
@@ -34,16 +33,12 @@ class Login {
 		}		
 	}
 
-	public function userIsLogedIn(){			//kan behövas med get login sen för cookielogin
+	public function userIsLogedIn(){
 		if (isset($_SESSION['login'])) {
 			if($this->testSession() == true) {
 				return true;
 			}	
 		}
-
-		/*if (isset($_COOKIE["username"])) {
-			return true;
-		}*/
 
 		else {
 			return false;
@@ -102,7 +97,7 @@ class Login {
 	}
 
 	public function loginFromCookie() {
-		$_SESSION['login'] = 1;
+		$_SESSION['login'] = 2;
 		$this->cookielogin = true;
 	}
 
@@ -183,26 +178,6 @@ class Login {
 
 	}
 
-	//används inte!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	/*private function checkInput ($input) {
-
-		/*if (isset($_POST[$input])) {
-			return true;
-		}	
-
-		if(empty($_POST['username']) ) {
-			return $this->helpText = "Användarnamn saknas";
-		}
-
-		else if(empty($_POST['password']) ) {
-			return $this->helpText = "Lösenord saknas";
-		}
-
-		/*else {
-			return $this->helpText = "Felaktigt användarnamn och/eller lösenord";
-		}
-	}*/
-
 	//logga ut & förstör cookies och sessionen
 	public function doLogOut () {	
 		
@@ -216,6 +191,5 @@ class Login {
 			return $this->helpText = "Du har nu loggat ut";
 		}
 	}
-
 	
 }
