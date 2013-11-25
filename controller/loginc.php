@@ -23,8 +23,15 @@ class Login {
 		}
 
 		else {	
-			//testa ev kaka				
-			return $this->view->displayLogedIn();
+			//testa ev kaka
+			//if ($this->view->cookie == true) {
+				//if ($this->model->testCookie() == true && $this->model->testSession() == true) {
+					return $this->view->displayLogedIn();
+				//}
+
+				//else {}	
+			//}			
+			
 		}
 
 	}
@@ -43,16 +50,13 @@ class Login {
 					$this->view->notLogedIn();						
 				}				
 				
-				//if($user == false) {
+				
 				else {
 					//visa resultat via vyn	
 					if ($this->view->cookie == true) {
 						$this->model->storeUser($user);
-					}
-
-					//else {
+					}					
 						$this->view->doLogIn();
-					//}
 				}
 			}
 			catch (\Exception $e) {
@@ -60,20 +64,28 @@ class Login {
 			}
 		}
 
-		//-----------------login med cookies---------------------
+		//-----------------login utifrån cookies---------------------
 
 		//kolla i vyn vill anv logga in?
-		//if ($this->view->userWantsToLoginWCookie()) {
-				//inget bra, det får bli en ifsats i vyn nån stans som kollar cookie eller ej
-		//}
+		if ($this->view->userWantsToLoginWCookie()) {		
 
 		//ta in data från vyn
+			$inputPsw = $this->view->getPassword();
 
 		//testa i modellen
+			if ($this->model->testUser($inputPsw) == false) {
 
-		//visa resultat via vyn
+				//visa resultat via vyn
+				$this->view->falseUser();
+			}
 
+			else {
+				$this->view->loginFromCookie();
+			}
 
+		
+
+		}
 		//--------------------logga ut--------------------------
 
 		if ($this->view->userWantsToLogOut()) {

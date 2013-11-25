@@ -11,7 +11,7 @@ class Login {
 	private $password = "";
 	private $helpText = "";
 	public $cookie = false;
-	private $session = $_SESSION["login"];
+	private $cookielogin = false;
 
 	public function userWantsToLogin() {
 		if (isset($_POST['submit'])) {
@@ -25,23 +25,23 @@ class Login {
 		}		
 	}
 
-	/*public function userWantsToLoginWCookie() {
-		if (isset($_POST['submit']) && isset($_POST['keeplogin']) ) {
+	public function userWantsToLoginWCookie() {
+		if ((isset($_COOKIE["username"])) && isset($_SESSION["login"])== null) {
 			return true;
 		}
 		else {
 			return false;
 		}		
-	}*/
+	}
 
 	public function userIsLogedIn(){			//kan behövas med get login sen för cookielogin
-		if (isset($this->session)) {
+		if (isset($_SESSION['login'])) {
 			return true;
 		}
 
-		if (isset($_COOKIE["username"])) {
+		/*if (isset($_COOKIE["username"])) {
 			return true;
-		}
+		}*/
 
 		else {
 			return false;
@@ -78,19 +78,35 @@ class Login {
 		}			
 	}
 
+	public function getPassword () {
+		$inputPsw = $_COOKIE["password"];
+		return $inputPsw;
+	}
+
+	public function falseUser() {
+		
+		unset($_SESSION['login']);			
+		return $this->helpText = "Felaktig information i cookie";
+	}
+
 	public function notLogedIn() {
 		$this->helpText = "Felaktigt användarnamn och/eller lösenord";
 	}
 
 	public function doLogIn () {
-		$this->session = 1;	
+		$_SESSION['login'] = 1;	
 
-		if ($this->cookie == true)	{
+		/*if ($this->cookie == true)	{
 			//gör något m cookies
-		}	
+		}*/	
 			
 		header("Location: ?login");
 
+	}
+
+	public function loginFromCookie() {
+		$_SESSION['login'] = 1;
+		$this->cookielogin = true;
 	}
 
 	public function displayForm () { 		//fixa till post mm i början
@@ -121,37 +137,29 @@ class Login {
 	}
 
 	public function displayLogedIn() {
-		if (isset($this->session)) {
-			//if ($this->testSession()==true) {						
-				//$html = "<h2> $this->username är inloggad</h2>";
-				$html = "";				
-				
-				$this->session = $this->session+1;
-
-				if $this->session < 4) {					
-					if (isset($_COOKIE["username"])) {
-						
-						$html= "<p>Inloggningen lyckades och vi kommer ihåg dig nästa gång</br></p>";
-					}
-
-					else {
-						
-						$html.="<p>Inloggningen lyckades </br></p>";						
-					}
-				}			
-				
-				$html.="<a href='?logout'>Logga ut</a>";
+		if (isset($_SESSION['login'])) {
+			$html = "";				
 			
-			//}
+			$_SESSION['login'] = $_SESSION['login']+1;
 
-			/*else {
-				unset($_SESSION["login"]);
-				session_destroy();
-				header("Location: $_SERVER[PHP_SELF]");
-			}	*/	
+			if ($_SESSION['login'] < 4) {					
+				if ($this->cookielogin == true) {
+					$html.="<p>Inloggningen lyckades via cookies</br></p>";					
+				}
 
-				return $html;
+				else if (isset($_COOKIE["username"])) {
+					$html.= "<p>Inloggningen lyckades och vi kommer ihåg dig nästa gång</br></p>";
+				}
 
+				else {
+					
+					$html.="<p>Inloggningen lyckades </br></p>";						
+				}
+			}			
+			
+			$html.="<a href='?logout'>Logga ut</a>";
+
+			return $html;
 		}
 	}
 
@@ -178,12 +186,12 @@ class Login {
 	//logga ut & förstör cookies och sessionen
 	public function doLogOut () {	
 		
-		if(!isset($this->session)) {
+		if(!isset($_SESSION['login'])) {
 				return "";
 		}
 
 		else {		
-			unset($this->session);
+			unset($_SESSION['login']);
 			
 			return $this->helpText = "Du har nu loggat ut";
 		}
