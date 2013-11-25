@@ -17,6 +17,8 @@ class Login {
 
 		$this->testUserInput();
 
+		print_r($this->view->userIsLogedIn());				//////////////////////////////////
+
 		if ($this->view->userIsLogedIn() == false) {
 		
 			return $this->view->displayForm();
@@ -33,6 +35,7 @@ class Login {
 			//}			
 			
 		}
+		
 
 	}
 

@@ -38,15 +38,17 @@ class Html {
 	}
 
 	public function nameOfUser() {
+		$html = "<h2>Ej inloggad</h2>";
 
 		if(isset($_SESSION["login"])) {
 			//$name = $_POST['username'];					//här är et tokigt!!!!!!!!!!!!!!!!!!!!!!!!
-
-			$html = "<h2>Admin är inloggad</h2>";
+			//if($_SESSION["login"] >= 3) {
+				$html = "<h2>Admin är inloggad</h2>";
+			//}
 		}
-		else {
-			$html = "<h2>Ej inloggad</h2>";
-		}
+		//else {
+			//$html = "<h2>Ej inloggad</h2>";
+		//}
 
 		
 		

@@ -49,7 +49,7 @@ class Login {
 
 		if ($inputPsw == $correctPsw) {
 
-			if ($this->testSession()==true && $this->testCookie()==true) {
+			if ($this->testCookie()==true) {
 				return true;
 			}
 
@@ -79,27 +79,6 @@ class Login {
 		}		
 	}
 
-	//får detta vara i modellen???
-	public function testSession() {
-
-		$sessionLocation = "testSession";
-
-		if(isset($_SESSION[$sessionLocation]) == false) {
-			$_SESSION[$sessionLocation] = array();
-			$_SESSION[$sessionLocation]["browser"] = $_SERVER["HTTP_USER_AGENT"];
-			$_SESSION[$sessionLocation]["ip"] = $_SERVER["REMOTE_ADDR"];
-		}
-
-		if ($_SESSION[$sessionLocation]["browser"] != $_SERVER["HTTP_USER_AGENT"] ||
-			$_SESSION[$sessionLocation]["ip"] != $_SERVER["REMOTE_ADDR"]) {
-			
-			return false;
-		}
-
-		else {
-			return true;
-		}
-
-	}
+	
 	
 }

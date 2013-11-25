@@ -9,4 +9,3 @@ $content= $controller->LoginUser();
 $html = new view\html();
 
 echo $html->getPage($content);
-

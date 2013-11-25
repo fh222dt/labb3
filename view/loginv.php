@@ -36,7 +36,9 @@ class Login {
 
 	public function userIsLogedIn(){			//kan behövas med get login sen för cookielogin
 		if (isset($_SESSION['login'])) {
-			return true;
+			if($this->testSession() == true) {
+				return true;
+			}	
 		}
 
 		/*if (isset($_COOKIE["username"])) {
@@ -84,7 +86,7 @@ class Login {
 	}
 
 	public function falseUser() {
-		
+
 		unset($_SESSION['login']);			
 		return $this->helpText = "Felaktig information i cookie";
 	}
@@ -95,13 +97,8 @@ class Login {
 
 	public function doLogIn () {
 		$_SESSION['login'] = 1;	
-
-		/*if ($this->cookie == true)	{
-			//gör något m cookies
-		}*/	
 			
 		header("Location: ?login");
-
 	}
 
 	public function loginFromCookie() {
@@ -161,6 +158,29 @@ class Login {
 
 			return $html;
 		}
+	}
+
+	public function testSession() {
+
+		$sessionLocation = "testSession";
+
+		if(isset($_SESSION[$sessionLocation]) == false) {
+			$_SESSION[$sessionLocation] = array();
+			$_SESSION[$sessionLocation]["browser"] = $_SERVER["HTTP_USER_AGENT"];
+			$_SESSION[$sessionLocation]["ip"] = $_SERVER["REMOTE_ADDR"];
+		}
+
+		if ($_SESSION[$sessionLocation]["browser"] != $_SERVER["HTTP_USER_AGENT"] ||
+			$_SESSION[$sessionLocation]["ip"] != $_SERVER["REMOTE_ADDR"]) {
+			
+			unset($_SESSION['login']);
+			return false;
+		}
+
+		else {
+			return true;
+		}
+
 	}
 
 	//används inte!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
