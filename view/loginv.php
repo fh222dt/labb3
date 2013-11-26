@@ -4,14 +4,20 @@ namespace view;
 require_once("model/userm.php");
 
 class Login {
-
+	//sträng med utdata
 	private $html = "";
+	//sträng med användarnamn
 	private $username = "";
+	//sträng med lösenord
 	private $password = "";
+	//sträng med feedback t användaren
 	private $helpText = "";
+	//boolean med värde för kaka eller ej
 	public $cookie = false;
+	//boolean med värde för inloggning med kaka eller ej
 	private $cookielogin = false;
 
+	//returnerar true om anv vill logga in
 	public function userWantsToLogin() {
 		if (isset($_POST['submit'])) {
 			if(isset($_POST['keeplogin'])) {
@@ -24,6 +30,7 @@ class Login {
 		}		
 	}
 
+	//returnerar true om anv vill logga in med kaka
 	public function userWantsToLoginWCookie() {
 		if ((isset($_COOKIE["username"])) && isset($_SESSION["login"])== null) {
 			return true;
@@ -33,6 +40,7 @@ class Login {
 		}		
 	}
 
+	//returnerar true om anv är inloggad
 	public function userIsLogedIn(){
 		if (isset($_SESSION['login'])) {
 			if($this->testSession() == true) {
@@ -45,6 +53,7 @@ class Login {
 		}		
 	}
 
+	//returnerar true om anv vill logga ut
 	public function userWantsToLogOut () {
 		if (isset($_GET['logout'])) {
 			return true;
@@ -54,6 +63,7 @@ class Login {
 		}		
 	}
 
+	//returnerar en anv av klassen User, felhanterar indata från anv
 	public function getUser() {
 		
 		$this->username = $_POST['username'];
@@ -75,33 +85,39 @@ class Login {
 		}			
 	}
 
+	//returnerar ett lösenord från en kaka
 	public function getPassword () {
 		$inputPsw = $_COOKIE["password"];
 		return $inputPsw;
 	}
 
+	//presenterar felmedelande
 	public function falseUser() {
 
 		unset($_SESSION['login']);			
 		return $this->helpText = "Felaktig information i cookie";
 	}
 
+	//presenterar felmedelande
 	public function notLogedIn() {
 		$this->helpText = "Felaktigt användarnamn och/eller lösenord";
 	}
 
+	//starta en inloggning
 	public function doLogIn () {
 		$_SESSION['login'] = 1;	
 			
 		header("Location: ?login");
 	}
 
+	//Starta en inloggning från kaka
 	public function loginFromCookie() {
 		$_SESSION['login'] = 2;
 		$this->cookielogin = true;
 	}
 
-	public function displayForm () { 		//fixa till post mm i början
+	//presenterar inloggningsformulär
+	public function displayForm () {
 		$value = isset($_POST['username']) ? $_POST['username'] : '';
 
 
@@ -128,6 +144,7 @@ class Login {
 		return $html;
 	}
 
+	//presenterar feedback på inloggning
 	public function displayLogedIn() {
 		if (isset($_SESSION['login'])) {
 			$html = "";				
@@ -155,6 +172,7 @@ class Login {
 		}
 	}
 
+	//testar om sessionen är korrekt
 	public function testSession() {
 
 		$sessionLocation = "testSession";
@@ -178,7 +196,7 @@ class Login {
 
 	}
 
-	//logga ut & förstör cookies och sessionen
+	//presenterar feedback vid utloggning
 	public function doLogOut () {	
 		
 		if(!isset($_SESSION['login'])) {

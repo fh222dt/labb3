@@ -5,10 +5,13 @@ class Login {
 
 	//sträng med krypterat lösenord
 	private $hashedPsw = "";
+	//sträng med korekt användarnamn
 	private $correctUsername = "Admin";
+	//sträng med korrekt lösenord
 	private $correctPassword = "Password";
 
-	//Returnerar true om rätt användarnamn & lösen angetts 
+	//Returnerar true om rätt användarnamn & lösen angetts
+	//Tar userobjekt som inparameter 
 	public function loginUser(User $user) {
 		if($user->username == $this->correctUsername && $user->password == $this->correctPassword) {
 			return true;			
@@ -20,6 +23,7 @@ class Login {
 	}	
 	
 	//skapa cookies
+	//Tar userobjekt som inparameter
 	public function storeUser (User $user) {
 
 		$this->hashedPsw = crypt($user->password); 
@@ -34,6 +38,7 @@ class Login {
 
 	//testa befintligt users lösenord och gammal kaka. 
 	//Returnerar true om det är rätt lösen & inte för gammal kaka.
+	//Tar sträng som inparameter
 	public function testUser($inputPsw) {
 		$correctPsw = file_get_contents("password.txt");
 

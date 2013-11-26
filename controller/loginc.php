@@ -17,8 +17,6 @@ class Login {
 
 		$this->testUserInput();
 
-		print_r($_SESSION['login']);
-
 		if ($this->view->userIsLogedIn() == false) {
 		
 			return $this->view->displayForm();
@@ -28,30 +26,21 @@ class Login {
 			
 			return $this->view->displayLogedIn();			
 		}
-		
-
-
 	}
-
-
 
 	private function testUserInput () {
 		//-----------------login utan cookies-----------------------
-		//kolla i vyn vill anv logga in?
+		
 		if ($this->view->userWantsToLogin()) {			
-			try {
-				//ta in data från vyn
+			try {				
 				$user = $this->view->getUser();
-
-				//testa i modellen
+				
 				if ($this->model->loginUser($user) == false) {
-					//visa resultat via vyn för ej inloggad
+					
 					$this->view->notLogedIn();						
-				}				
+				}					
 				
-				
-				else {
-					//visa resultat via vyn	
+				else {					
 					if ($this->view->cookie == true) {
 						$this->model->storeUser($user);
 					}					
@@ -65,25 +54,17 @@ class Login {
 
 		//-----------------login utifrån cookies---------------------
 
-		//kolla i vyn vill anv logga in?
 		if ($this->view->userWantsToLoginWCookie()) {		
 
-		//ta in data från vyn
 			$inputPsw = $this->view->getPassword();
 
-		//testa i modellen
 			if ($this->model->testUser($inputPsw) == false) {
-
-				//visa resultat via vyn
 				$this->view->falseUser();
 			}
 
 			else {
 				$this->view->loginFromCookie();
 			}
-
-		
-
 		}
 		//--------------------logga ut--------------------------
 

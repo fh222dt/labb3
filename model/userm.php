@@ -2,10 +2,13 @@
 namespace model;
 
 class User { 
-
+	//sträng för användarnamn
 	public $username = "";
+	//sträng för lösenord
 	public $password = "";
 
+	//skapa en användare
+	//Tar 2 strängar som inparametrar
 	public function __construct ($username, $password) {
 
 		if ($username == "") {

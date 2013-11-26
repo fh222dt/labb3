@@ -2,16 +2,16 @@
 namespace view;
 require_once("view/loginv.php");
 
-
-
 class Html {
-
+	//generera htmlsidan
+	//Tar sträng som inparameter
 	public function getPage($content) {
 		$date = $this->displayDate();
 		$name = $this->nameOfUser();
-		$html ="<html>
+		$html =" <!doctype html>
+					<html lang='sv'>
 					<head>
-					<meta charset='utf-8'>
+					<meta charset='utf-8'/>
 					<title>Laboration 3</title>
 					<link rel='stylesheet' href='bootstrap/css/bootstrap.css'>
 					<link rel='stylesheet' href='bootstrap/css/bootstrap-responsive.css'>
@@ -29,6 +29,7 @@ class Html {
 		return $html;
 	}
 
+	//generera datum
 	private function displayDate() {
 
 		setlocale (LC_TIME, "Swedish");
@@ -37,6 +38,7 @@ class Html {
 		return $date;
 	}
 
+	//generera namn på inloggad
 	public function nameOfUser() {
 		$html = "<h2>Ej inloggad</h2>";
 
